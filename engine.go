@@ -18,15 +18,7 @@ type ConfigEntry struct {
 	Filter string `json:"filter,omitempty"`
 }
 
-func main() {
-	// parse config
-	// get from source (RSS, etc..)
-	// -> Content
-	// add to storage
-	// query storoge
-	// add to hit storage
-	// output
-}
+func main() {}
 
 func config(p string) (Config, error) {
 	c, err := ioutil.ReadFile(p)
