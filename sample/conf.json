@@ -1,0 +1,15 @@
+{
+	"sources": [{
+		"type": "rss",
+		"url": "https://news.ycombinator.com/rss"
+	},
+	{
+		"type": "rss",
+		"url": "http://rss.nytimes.com/services/xml/rss/nyt/World.xml"
+	}],
+	"filters": [{
+		"type": "news",
+		"filter": "a filter defined by user"
+	}],
+	"outputs": []
+}
