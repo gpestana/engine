@@ -5,9 +5,8 @@ import (
 )
 
 type Rss struct {
-	Type   string
-	Url    string
-	signal chan struct{}
+	Type string
+	Url  string
 }
 
 func (r Rss) Fetch() []data.DataUnit {

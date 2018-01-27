@@ -3,10 +3,11 @@ package main
 import (
 	"encoding/json"
 	"flag"
-	// "github.com/gpestana/engine/data"
+	"github.com/gpestana/engine/data"
 	"github.com/gpestana/engine/source"
 	"io/ioutil"
 	"log"
+	"sync"
 )
 
 type Config struct {
@@ -34,22 +35,42 @@ func main() {
 		log.Fatal("Configuration parsing: " + err.Error())
 	}
 
-	dataCount := 0
-	dataCh := make(chan data.DataUnit)
-
 	sources := []source.Source{}
+	srcCh := make(chan []data.DataUnit, len(sources))
+	unitsCh := make(chan data.DataUnit)
+	var wg sync.WaitGroup
+
 	for _, src := range conf.Sources {
 		s := source.New(src.Type, src.Url)
 		sources = append(sources, s)
 
-		go func(s source.Source) {
-			data := s.Fetch()
-			//mutex!
-			dataCount += len(data)
-			dataCh <- data
-		}(s)
+		go func() {
+			srcCh <- s.Fetch()
+		}()
 	}
 
+	for i := 0; i < len(sources); i++ {
+		units := []data.DataUnit{}
+		units = <-srcCh
+		wg.Add(len(units))
+		for _, u := range units {
+			go func(u data.DataUnit) {
+				unitsCh <- u.Handle()
+				wg.Done()
+			}(u)
+		}
+	}
+
+	// data channel closer
+	go func() {
+		wg.Wait()
+		close(unitsCh)
+	}()
+
+	// receive units
+	for u := range unitsCh {
+		log.Println(u)
+	}
 }
 
 func config(p string) (Config, error) {

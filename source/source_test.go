@@ -7,9 +7,8 @@ import (
 func TestNew(t *testing.T) {
 	tp := "rss"
 	u := "UrlA"
-	c := make(chan struct{})
 
-	src := New(tp, u, c)
+	src := New(tp, u)
 	rss := src.(Rss)
 
 	if rss.Type != tp {
