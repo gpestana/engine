@@ -1,4 +1,8 @@
 .PHONY: build test sample
+ifndef VERBOSE
+.SILENT:
+endif
+
 
 build:
 	go build 

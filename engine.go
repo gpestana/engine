@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"flag"
+	"fmt"
 	"github.com/gpestana/engine/data"
 	"github.com/gpestana/engine/source"
 	"io/ioutil"
@@ -69,7 +70,7 @@ func main() {
 
 	// receive units
 	for u := range unitsCh {
-		log.Println(u)
+		fmt.Println(u)
 	}
 }
 

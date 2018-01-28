@@ -1,13 +1,19 @@
 package data
 
 import (
+	"encoding/json"
 	"time"
 )
 
 type DataUnit struct {
-	Url       string
-	Timestamp time.Time
-	Payload   []byte
+	Url         string
+	Timestamp   time.Time
+	Description string
+	// Pointer from where DataUnit was fetched
+	Parent interface{}
+	// Original content fetched from Parent
+	FetchedContent interface{}
+	Payload        []byte
 }
 
 func (d DataUnit) Handle() DataUnit {
@@ -15,5 +21,6 @@ func (d DataUnit) Handle() DataUnit {
 }
 
 func (d DataUnit) String() string {
-	return d.Url
+	s, _ := json.Marshal(d)
+	return string(s)
 }
