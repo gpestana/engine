@@ -2,6 +2,7 @@ package data
 
 import (
 	"encoding/json"
+	"github.com/gpestana/htmlizer"
 	"io/ioutil"
 	"net/http"
 	"time"
@@ -41,7 +42,9 @@ func (d *DataUnit) getContent() error {
 	if err != nil {
 		return err
 	}
-	d.Payload = body
+	h := htmlizer.New()
+	h.Load(string(body))
+	d.Payload = []byte(h.HumanReadable())
 	return nil
 }
 
