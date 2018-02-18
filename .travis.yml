@@ -1,0 +1,6 @@
+language: go
+go:
+  - master
+
+install:
+  - go get -u github.com/gpestana/htmlizer
